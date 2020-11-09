@@ -9,6 +9,7 @@ import (
 
 	_ "github.com/godror/godror"
 	_ "github.com/lib/pq"
+	//_ "gopkg.in/goracle.v2"
 	//	"log"
 )
 
