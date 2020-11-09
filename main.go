@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"log"
 	"regexp"
 	"strings"
 
@@ -30,7 +29,7 @@ func testConnstrinng(tconnstr string) (string, string, string) {
 	}
 }
 
-func checkDB(ctypeDB, cconStr, cuser, cpass, cdb string) (string, string) {
+func checkDB(ctypeDB, cconStr, cuser, cpass, cdb string) string {
 	type responce struct {
 		tresp string
 	}
@@ -44,7 +43,7 @@ func checkDB(ctypeDB, cconStr, cuser, cpass, cdb string) (string, string) {
 		cquerry = fmt.Sprintf("SELECT 1 as test FROM pg_database WHERE datname='%s';", cdb)
 		cconnString = fmt.Sprintf("user=%s password=%s %s", cuser, cpass, cconStr)
 	} else {
-		return "", "error"
+		return "error"
 	}
 
 	//return cquerry, cconnString
@@ -62,7 +61,9 @@ func checkDB(ctypeDB, cconStr, cuser, cpass, cdb string) (string, string) {
 	db, err := sql.Open(ctypeDB, cconnString)
 	if err != nil {
 		//panic(err)
-		log.Fatal("Failed connect to DB : ", err)
+		//log.Fatal("Failed connect to DB : ", err)
+		fmt.Println(err)
+		return "" //, err.Error()
 	}
 	defer db.Close()
 
@@ -72,11 +73,19 @@ func checkDB(ctypeDB, cconStr, cuser, cpass, cdb string) (string, string) {
 
 	err = db.QueryRow(cquerry).Scan(&test.tresp)
 	if err != nil {
-		log.Fatal("Failed to execute query: ", err)
+		//log.Fatal("Failed to execute query: ", err)
+		fmt.Println(err)
+		return "" //, err.Error()
 	}
 
-	fmt.Printf("%s\n", test.tresp)
-	return "", test.tresp
+	//fmt.Printf("%s\n", test.tresp)
+	if test.tresp == "1" {
+		return "OK"
+	}
+	fmt.Println(err)
+	return ""
+
+	//return "", test.tresp
 }
 
 func main() {
