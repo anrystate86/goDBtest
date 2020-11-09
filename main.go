@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	_ "github.com/jackc/pgx"
+	_ "github.com/godror/godror"
 	_ "github.com/lib/pq"
 	//	"log"
 )
@@ -16,7 +16,7 @@ func testConnstrinng(tconnstr string) (string, string, string) {
 	reOra := regexp.MustCompile(`^jdbc:oracle:thin:@[\w\-\.]+:\d+\/[\w\d\_]+`)
 	rePg := regexp.MustCompile(`^jdbc:postgresql:\/\/[\w\-\.]+\/[\w\d\_]+\?:[\w\d\_]+`)
 	if reOra.Match([]byte(tconnstr)) {
-		return "oracle", strings.TrimPrefix(tconnstr, "jdbc:oracle:thin:@"), ""
+		return "godror", strings.TrimPrefix(tconnstr, "jdbc:oracle:thin:@"), ""
 	} else if rePg.Match([]byte(tconnstr)) {
 		tr1 := strings.TrimPrefix(tconnstr, "jdbc:postgresql://")
 		serverStr := strings.Split(tr1, "/")[0]
@@ -36,7 +36,7 @@ func checkDB(ctypeDB, cconStr, cuser, cpass, cdb string) string {
 	var cquerry string
 	var cconnString string
 	//querry
-	if ctypeDB == "oracle" {
+	if ctypeDB == "godror" {
 		cquerry = "select 1 from dual;"
 		cconnString = fmt.Sprintf("%s/%s%s", cuser, cpass, cconStr)
 	} else if ctypeDB == "postgres" {
