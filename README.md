@@ -8,3 +8,5 @@ jdbc:postgresql://db-server1/dbbig1?:5432/apptest1
 
 Using:
 goDBtest -user User -pass Password -constr jdbc:postgresql://localhost/postgres?:5432/public
+
+For using oracle connection need to be installed Oracle Instant Client https://oracle.github.io/odpi/doc/installation.html#linux
